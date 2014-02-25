@@ -9,5 +9,5 @@ if the user didn't install Facebook app,this will call Feed Dialog
 Usage
 =====
 
-FacebookShare F=new FacebookShare(Activity,url,text);
-F.Share();
+    FacebookShare F=new FacebookShare(Activity,url,text);
+    F.Share();
