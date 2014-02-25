@@ -1,3 +1,4 @@
+package sg.com.titansoft.object;
 
 import java.util.Arrays;
 import java.util.List;
@@ -138,15 +139,12 @@ public class FacebookShare {
     	                        // and the post Id.
     	                        final String postId = values.getString("post_id");
     	                        if (postId != null) {
-    	                        	//dismiss();
-    	                           // Toast.makeText((Context) c,
-    	                           //     "Posted story, id: "+postId,
-    	                           //     Toast.LENGTH_SHORT).show();
+    	                        	Log.i("FacebookShare","postId="+postId);
     	                        } else {
     	                            // User clicked the Cancel button
-    	                           // Toast.makeText((Context) c.getApplicationContext(), 
-    	                           //     "Publish cancelled", 
-    	                           //     Toast.LENGTH_SHORT).show();
+    	                            Toast.makeText(act, 
+    	                                "Publish cancelled", 
+    	                                Toast.LENGTH_SHORT).show();
     	                        }
     	                    } else if (error instanceof FacebookOperationCanceledException) {
     	                        // User clicked the "x" button
