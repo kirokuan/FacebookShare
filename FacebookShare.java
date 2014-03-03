@@ -36,15 +36,10 @@ public class FacebookShare {
 		openSession();
 	}	
 	private void openSession(){
-		//session = Session.getActiveSession();
-		/*if (session == null) {
-            session = new Session(act);
-        }
-        Session.setActiveSession(session);
-        if (session.isClosed()){
-       	 
-       }*/
-        session = new Session(act);
+		session = Session.getActiveSession();
+		if (session == null||session.isClosed()){
+        	 session = new Session(act);
+       }
        	Session.setActiveSession(session);
         if (!session.isOpened() && !session.isClosed()) {
             session.openForPublish(new Session.OpenRequest(act).setCallback(statusCallback)
