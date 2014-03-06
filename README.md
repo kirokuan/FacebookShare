@@ -11,3 +11,8 @@ Usage
 
     FacebookShare F=new FacebookShare(Activity,url,text);
     F.Share();
+
+in the activity OnActivityResult add
+
+    F.session.onActivityResult(this, requestCode, resultCode, data);
+    //this is activity
