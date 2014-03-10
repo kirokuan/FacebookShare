@@ -28,12 +28,12 @@ public class FacebookShare {
 	private String ShareText;
 	private UiLifecycleHelper uiHelper;
 	public Session session;
+	protected final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 	public FacebookShare(Activity a,String u,String t){
 		act=a;
 		ShareUrl=u;
 		ShareText=t;
 		uiHelper = new UiLifecycleHelper(act, callback);
-		openSession();
 	}	
 	private void openSession(){
 		session = Session.getActiveSession();
@@ -41,9 +41,12 @@ public class FacebookShare {
         	 session = new Session(act);
        }
        	Session.setActiveSession(session);
+		if(session.isOpened()) return;
         if (!session.isOpened() && !session.isClosed()) {
-            session.openForPublish(new Session.OpenRequest(act).setCallback(statusCallback)
-            		.setPermissions(Arrays.asList("publish_actions")));
+            session.openForPublish(new Session.OpenRequest(act)
+									.setCallback(statusCallback)
+									.setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO)
+									.setPermissions(PERMISSIONS));
         }
         else {
             Session.openActiveSession(act, true, statusCallback);
@@ -61,24 +64,27 @@ public class FacebookShare {
     private class SessionStatusCallback implements Session.StatusCallback {
         @Override
         public void call(Session session, SessionState state, Exception exception) {
-     //       updateView();
-//        	Share();
+			Log.i("facebook","state:"+state.toString());
+        	if(state == SessionState.OPENING){
+        		fromLogin=true;
+        	}
+        	if (state == SessionState.OPENED){
+        	  if(fromLogin) Share();
+        	}
+        	if(state == SessionState.CLOSED_LOGIN_FAILED){
+        		session.closeAndClearTokenInformation();
+        	}
         }
     }
     public void Share(){
-    	Log.i("facebook","isClosed="+session.isClosed()+",isOpen="+session.isOpened());
-    	if (session.isClosed()){
-    		openSession();
-    	//	Share();
-        //	session.openForRead(new Session.OpenRequest(act).setCallback(statusCallback));
-        }
+    	//Log.i("facebook","isClosed="+session.isClosed()+",isOpen="+session.isOpened());
+    	openSession();
     	if(session.isOpened()&& session.getPermissions().contains("publish_actions")){
     		postStatusUpdate(session);
     		
     	}else if(session.isOpened()){
     		/** this should not be needed and executed the permission should be request during login**/
     		Log.i("facebook","request to permission");
-    		final List<String> PERMISSIONS = Arrays.asList("publish_actions");
     		Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(act, PERMISSIONS);
             newPermissionsRequest.setCallback(new Session.StatusCallback(){
 				
