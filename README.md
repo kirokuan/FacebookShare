@@ -14,7 +14,7 @@ Usage
 
 in the activity OnActivityResult add
 
-    if( resultCode == Activity.RESULT_OK) F.session.onActivityResult(this, requestCode, resultCode, data);
+    F.session.onActivityResult(this, requestCode, resultCode, data);
     //this is activity
 
 Change Log
@@ -26,3 +26,4 @@ Change Log
   =>call session.closeAndClearTokenInformation(); to close session,so the
     activity would create new session next time
 2. use .setLoginBehavior(SessionLoginBehavior.SUPPRESS_SSO) to prevent auth error
+03-11 12:19:21.180: I/LoginApp(3959): Call Url: http://www.spowerapp.com/web-root/public/api/v1/get-event-list.aspx?Lang=zh-cn&Version=1393452675237
